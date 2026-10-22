@@ -1,26 +1,1021 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Vigia — tokens. Ver design-system/vigia/MASTER.md
+   "tinta" é a cor do texto e inverte no modo escuro; "noite" é a superfície escura
+   (barra lateral, painéis de destaque) e mantém-se escura nos dois modos.
+   Tema: data-tema="claro" | "escuro" no <html>; sem atributo segue o sistema. */
+:root,
+[data-tema="claro"] {
+  --tinta: #16213a;
+  --tinta-2: #24314f;
+  --noite: #16213a;
+  --papel: #f4f5f1;
+  --superficie: #ffffff;
+  --linha: #dfe2da;
+  --texto-suave: #5a6275;
+  --indigo: #2f3fb8;
+  --indigo-escuro: #26339a;
+  --indigo-claro: #e6e8f8;
+  --sobre-cor: #ffffff;
+  --marcador: #f2b233;
+  --marcador-claro: #fcefcf;
+  --mangal: #0a6e55;
+  --mangal-claro: #ddf0ea;
+  --risco: #b02f25;
+  --risco-claro: #f8e3e1;
+  --conversa: #eef0ea;
+  --bolha: #ffffff;
+  --progresso: #0f7f63;
+  --sobre-progresso: #ffffff;
+  --energia: #f2b233;
+  --energia-claro: #fcefcf;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-tema]) {
+  --tinta: #e6e9f0;
+  --tinta-2: #2c3957;
+  --noite: #212c48;
+  --papel: #0e1422;
+  --superficie: #161f33;
+  --linha: #2a3551;
+  --texto-suave: #9ba4b7;
+  --indigo: #8f9bff;
+  --indigo-escuro: #aab3ff;
+  --indigo-claro: #252e55;
+  --sobre-cor: #0e1422;
+  --marcador: #f2b233;
+  --marcador-claro: #3a2f14;
+  --mangal: #3dbb94;
+  --mangal-claro: #13302a;
+  --risco: #f2766b;
+  --risco-claro: #3b1f22;
+  --conversa: #111a2b;
+  --bolha: #1f2a42;
+  --progresso: #3dbb94;
+  --sobre-progresso: #0e1422;
+  --energia: #f2b233;
+  --energia-claro: #3a2f14;
+  color-scheme: dark;
   }
 }
 
+[data-tema="escuro"] {
+  --tinta: #e6e9f0;
+  --tinta-2: #2c3957;
+  --noite: #212c48;
+  --papel: #0e1422;
+  --superficie: #161f33;
+  --linha: #2a3551;
+  --texto-suave: #9ba4b7;
+  --indigo: #8f9bff;
+  --indigo-escuro: #aab3ff;
+  --indigo-claro: #252e55;
+  --sobre-cor: #0e1422;
+  --marcador: #f2b233;
+  --marcador-claro: #3a2f14;
+  --mangal: #3dbb94;
+  --mangal-claro: #13302a;
+  --risco: #f2766b;
+  --risco-claro: #3b1f22;
+  --conversa: #111a2b;
+  --bolha: #1f2a42;
+  --progresso: #3dbb94;
+  --sobre-progresso: #0e1422;
+  --energia: #f2b233;
+  --energia-claro: #3a2f14;
+  color-scheme: dark;
+}
+
+/* ---------- Paletas de cor ----------
+   A Vigia (azul-tinta) é a paleta por omissão, definida acima. As outras activam-se com
+   data-paleta no <html> e têm sempre versão clara e escura. As amostras mostradas em
+   Definições estão em lib/paletas.ts; ao mudar uma cor aqui, actualiza também lá. */
+
+/* Energia */
+:root[data-paleta="energia"]:not([data-tema="escuro"]) {
+  --tinta: #111112;
+  --tinta-2: #2a2a2d;
+  --noite: #111112;
+  --papel: #f3f4f1;
+  --superficie: #ffffff;
+  --linha: #e0e2dc;
+  --texto-suave: #5b5e63;
+  --indigo: #2f7a00;
+  --indigo-escuro: #256200;
+  --indigo-claro: #e8f7d6;
+  --sobre-cor: #ffffff;
+  --marcador: #f2b233;
+  --marcador-claro: #fcefcf;
+  --mangal: #2f7a00;
+  --mangal-claro: #e3f5d0;
+  --risco: #b02f25;
+  --risco-claro: #f8e3e1;
+  --conversa: #eceee8;
+  --bolha: #ffffff;
+  --progresso: #6cc417;
+  --sobre-progresso: #111112;
+  --energia: #7ed321;
+  --energia-claro: #e8f7d6;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-paleta="energia"]:not([data-tema]) {
+    --tinta: #f2f2f2;
+    --tinta-2: #2a2a2d;
+    --noite: #111112;
+    --papel: #0a0a0b;
+    --superficie: #161617;
+    --linha: #2a2a2c;
+    --texto-suave: #9a9aa0;
+    --indigo: #7ed321;
+    --indigo-escuro: #95e03f;
+    --indigo-claro: #1f2a12;
+    --sobre-cor: #0a0a0b;
+    --marcador: #f2b233;
+    --marcador-claro: #3a2f14;
+    --mangal: #7ed321;
+    --mangal-claro: #1f2a12;
+    --risco: #ff4d4d;
+    --risco-claro: #3a1717;
+    --conversa: #0f0f10;
+    --bolha: #1d1d1f;
+    --progresso: #7ed321;
+    --sobre-progresso: #0a0a0b;
+    --energia: #7ed321;
+    --energia-claro: #1f2a12;
+    color-scheme: dark;
+  }
+}
+
+:root[data-paleta="energia"][data-tema="escuro"] {
+  --tinta: #f2f2f2;
+  --tinta-2: #2a2a2d;
+  --noite: #111112;
+  --papel: #0a0a0b;
+  --superficie: #161617;
+  --linha: #2a2a2c;
+  --texto-suave: #9a9aa0;
+  --indigo: #7ed321;
+  --indigo-escuro: #95e03f;
+  --indigo-claro: #1f2a12;
+  --sobre-cor: #0a0a0b;
+  --marcador: #f2b233;
+  --marcador-claro: #3a2f14;
+  --mangal: #7ed321;
+  --mangal-claro: #1f2a12;
+  --risco: #ff4d4d;
+  --risco-claro: #3a1717;
+  --conversa: #0f0f10;
+  --bolha: #1d1d1f;
+  --progresso: #7ed321;
+  --sobre-progresso: #0a0a0b;
+  --energia: #7ed321;
+  --energia-claro: #1f2a12;
+  color-scheme: dark;
+}
+
+/* Hibisco */
+:root[data-paleta="hibisco"]:not([data-tema="escuro"]) {
+  --tinta: #26111c;
+  --tinta-2: #3d1c2e;
+  --noite: #2a1020;
+  --papel: #f8f4f6;
+  --superficie: #ffffff;
+  --linha: #eddfe6;
+  --texto-suave: #6b5862;
+  --indigo: #be185d;
+  --indigo-escuro: #9d174d;
+  --indigo-claro: #fce7f3;
+  --sobre-cor: #ffffff;
+  --marcador: #f2b233;
+  --marcador-claro: #fcefcf;
+  --mangal: #0a6e55;
+  --mangal-claro: #ddf0ea;
+  --risco: #b02f25;
+  --risco-claro: #f8e3e1;
+  --conversa: #f1ebee;
+  --bolha: #ffffff;
+  --progresso: #db2777;
+  --sobre-progresso: #ffffff;
+  --energia: #f472b6;
+  --energia-claro: #fce7f3;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-paleta="hibisco"]:not([data-tema]) {
+    --tinta: #f5e9ef;
+    --tinta-2: #3d1c2e;
+    --noite: #2b1222;
+    --papel: #140a10;
+    --superficie: #1e1018;
+    --linha: #3a2030;
+    --texto-suave: #b49aa8;
+    --indigo: #f472b6;
+    --indigo-escuro: #f9a8d4;
+    --indigo-claro: #3b1830;
+    --sobre-cor: #140a10;
+    --marcador: #f2b233;
+    --marcador-claro: #3a2f14;
+    --mangal: #3dbb94;
+    --mangal-claro: #13302a;
+    --risco: #ff7a59;
+    --risco-claro: #3b1f18;
+    --conversa: #170c13;
+    --bolha: #2a1520;
+    --progresso: #f472b6;
+    --sobre-progresso: #140a10;
+    --energia: #f472b6;
+    --energia-claro: #3b1830;
+    color-scheme: dark;
+  }
+}
+
+:root[data-paleta="hibisco"][data-tema="escuro"] {
+  --tinta: #f5e9ef;
+  --tinta-2: #3d1c2e;
+  --noite: #2b1222;
+  --papel: #140a10;
+  --superficie: #1e1018;
+  --linha: #3a2030;
+  --texto-suave: #b49aa8;
+  --indigo: #f472b6;
+  --indigo-escuro: #f9a8d4;
+  --indigo-claro: #3b1830;
+  --sobre-cor: #140a10;
+  --marcador: #f2b233;
+  --marcador-claro: #3a2f14;
+  --mangal: #3dbb94;
+  --mangal-claro: #13302a;
+  --risco: #ff7a59;
+  --risco-claro: #3b1f18;
+  --conversa: #170c13;
+  --bolha: #2a1520;
+  --progresso: #f472b6;
+  --sobre-progresso: #140a10;
+  --energia: #f472b6;
+  --energia-claro: #3b1830;
+  color-scheme: dark;
+}
+
+/* Índico */
+:root[data-paleta="indico"]:not([data-tema="escuro"]) {
+  --tinta: #0b2230;
+  --tinta-2: #163a4f;
+  --noite: #0b2a3a;
+  --papel: #f2f6f7;
+  --superficie: #ffffff;
+  --linha: #d9e4e8;
+  --texto-suave: #4f6672;
+  --indigo: #0369a1;
+  --indigo-escuro: #075985;
+  --indigo-claro: #e0f2fe;
+  --sobre-cor: #ffffff;
+  --marcador: #f2b233;
+  --marcador-claro: #fcefcf;
+  --mangal: #047857;
+  --mangal-claro: #d1fae5;
+  --risco: #b02f25;
+  --risco-claro: #f8e3e1;
+  --conversa: #e8eff1;
+  --bolha: #ffffff;
+  --progresso: #0e7490;
+  --sobre-progresso: #ffffff;
+  --energia: #22d3ee;
+  --energia-claro: #cffafe;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-paleta="indico"]:not([data-tema]) {
+    --tinta: #e3eef2;
+    --tinta-2: #1d3a4b;
+    --noite: #0f2a38;
+    --papel: #071923;
+    --superficie: #0d2230;
+    --linha: #1d3a4b;
+    --texto-suave: #8fa9b5;
+    --indigo: #38bdf8;
+    --indigo-escuro: #7dd3fc;
+    --indigo-claro: #0c3550;
+    --sobre-cor: #071923;
+    --marcador: #f2b233;
+    --marcador-claro: #3a2f14;
+    --mangal: #34d399;
+    --mangal-claro: #0b3326;
+    --risco: #f2766b;
+    --risco-claro: #3b1f22;
+    --conversa: #081d29;
+    --bolha: #12303f;
+    --progresso: #22d3ee;
+    --sobre-progresso: #071923;
+    --energia: #22d3ee;
+    --energia-claro: #0c3550;
+    color-scheme: dark;
+  }
+}
+
+:root[data-paleta="indico"][data-tema="escuro"] {
+  --tinta: #e3eef2;
+  --tinta-2: #1d3a4b;
+  --noite: #0f2a38;
+  --papel: #071923;
+  --superficie: #0d2230;
+  --linha: #1d3a4b;
+  --texto-suave: #8fa9b5;
+  --indigo: #38bdf8;
+  --indigo-escuro: #7dd3fc;
+  --indigo-claro: #0c3550;
+  --sobre-cor: #071923;
+  --marcador: #f2b233;
+  --marcador-claro: #3a2f14;
+  --mangal: #34d399;
+  --mangal-claro: #0b3326;
+  --risco: #f2766b;
+  --risco-claro: #3b1f22;
+  --conversa: #081d29;
+  --bolha: #12303f;
+  --progresso: #22d3ee;
+  --sobre-progresso: #071923;
+  --energia: #22d3ee;
+  --energia-claro: #0c3550;
+  color-scheme: dark;
+}
+
+/* Jacarandá */
+:root[data-paleta="jacaranda"]:not([data-tema="escuro"]) {
+  --tinta: #1e1530;
+  --tinta-2: #33264d;
+  --noite: #241638;
+  --papel: #f6f4f8;
+  --superficie: #ffffff;
+  --linha: #e4dfeb;
+  --texto-suave: #625a70;
+  --indigo: #6d28d9;
+  --indigo-escuro: #5b21b6;
+  --indigo-claro: #ede9fe;
+  --sobre-cor: #ffffff;
+  --marcador: #f2b233;
+  --marcador-claro: #fcefcf;
+  --mangal: #0a6e55;
+  --mangal-claro: #ddf0ea;
+  --risco: #b02f25;
+  --risco-claro: #f8e3e1;
+  --conversa: #efecf3;
+  --bolha: #ffffff;
+  --progresso: #7c3aed;
+  --sobre-progresso: #ffffff;
+  --energia: #c084fc;
+  --energia-claro: #f3e8ff;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-paleta="jacaranda"]:not([data-tema]) {
+    --tinta: #ece8f3;
+    --tinta-2: #3a2b55;
+    --noite: #261a3b;
+    --papel: #120c1c;
+    --superficie: #1b1329;
+    --linha: #33264a;
+    --texto-suave: #a79bb8;
+    --indigo: #b794f6;
+    --indigo-escuro: #d0b8ff;
+    --indigo-claro: #2f2050;
+    --sobre-cor: #120c1c;
+    --marcador: #f2b233;
+    --marcador-claro: #3a2f14;
+    --mangal: #3dbb94;
+    --mangal-claro: #13302a;
+    --risco: #f2766b;
+    --risco-claro: #3b1f22;
+    --conversa: #150e21;
+    --bolha: #261b38;
+    --progresso: #a78bfa;
+    --sobre-progresso: #120c1c;
+    --energia: #c084fc;
+    --energia-claro: #2f2050;
+    color-scheme: dark;
+  }
+}
+
+:root[data-paleta="jacaranda"][data-tema="escuro"] {
+  --tinta: #ece8f3;
+  --tinta-2: #3a2b55;
+  --noite: #261a3b;
+  --papel: #120c1c;
+  --superficie: #1b1329;
+  --linha: #33264a;
+  --texto-suave: #a79bb8;
+  --indigo: #b794f6;
+  --indigo-escuro: #d0b8ff;
+  --indigo-claro: #2f2050;
+  --sobre-cor: #120c1c;
+  --marcador: #f2b233;
+  --marcador-claro: #3a2f14;
+  --mangal: #3dbb94;
+  --mangal-claro: #13302a;
+  --risco: #f2766b;
+  --risco-claro: #3b1f22;
+  --conversa: #150e21;
+  --bolha: #261b38;
+  --progresso: #a78bfa;
+  --sobre-progresso: #120c1c;
+  --energia: #c084fc;
+  --energia-claro: #2f2050;
+  color-scheme: dark;
+}
+
+/* Grafite */
+:root[data-paleta="grafite"]:not([data-tema="escuro"]) {
+  --tinta: #18181b;
+  --tinta-2: #2e2e33;
+  --noite: #27272a;
+  --papel: #f4f4f5;
+  --superficie: #ffffff;
+  --linha: #e4e4e7;
+  --texto-suave: #5f5f68;
+  --indigo: #18181b;
+  --indigo-escuro: #3f3f46;
+  --indigo-claro: #ececee;
+  --sobre-cor: #ffffff;
+  --marcador: #f2b233;
+  --marcador-claro: #fcefcf;
+  --mangal: #166534;
+  --mangal-claro: #dcfce7;
+  --risco: #b02f25;
+  --risco-claro: #f8e3e1;
+  --conversa: #ededef;
+  --bolha: #ffffff;
+  --progresso: #3f3f46;
+  --sobre-progresso: #ffffff;
+  --energia: #f2b233;
+  --energia-claro: #fcefcf;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-paleta="grafite"]:not([data-tema]) {
+    --tinta: #f4f4f5;
+    --tinta-2: #2e2e33;
+    --noite: #1c1c1f;
+    --papel: #09090b;
+    --superficie: #141417;
+    --linha: #27272a;
+    --texto-suave: #a1a1aa;
+    --indigo: #f4f4f5;
+    --indigo-escuro: #d4d4d8;
+    --indigo-claro: #27272a;
+    --sobre-cor: #09090b;
+    --marcador: #f2b233;
+    --marcador-claro: #3a2f14;
+    --mangal: #4ade80;
+    --mangal-claro: #12301d;
+    --risco: #f2766b;
+    --risco-claro: #3b1f22;
+    --conversa: #0e0e11;
+    --bolha: #1f1f23;
+    --progresso: #e4e4e7;
+    --sobre-progresso: #09090b;
+    --energia: #f2b233;
+    --energia-claro: #3a2f14;
+    color-scheme: dark;
+  }
+}
+
+:root[data-paleta="grafite"][data-tema="escuro"] {
+  --tinta: #f4f4f5;
+  --tinta-2: #2e2e33;
+  --noite: #1c1c1f;
+  --papel: #09090b;
+  --superficie: #141417;
+  --linha: #27272a;
+  --texto-suave: #a1a1aa;
+  --indigo: #f4f4f5;
+  --indigo-escuro: #d4d4d8;
+  --indigo-claro: #27272a;
+  --sobre-cor: #09090b;
+  --marcador: #f2b233;
+  --marcador-claro: #3a2f14;
+  --mangal: #4ade80;
+  --mangal-claro: #12301d;
+  --risco: #f2766b;
+  --risco-claro: #3b1f22;
+  --conversa: #0e0e11;
+  --bolha: #1f1f23;
+  --progresso: #e4e4e7;
+  --sobre-progresso: #09090b;
+  --energia: #f2b233;
+  --energia-claro: #3a2f14;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-tinta: var(--tinta);
+  --color-tinta-2: var(--tinta-2);
+  --color-noite: var(--noite);
+  --color-sobre-cor: var(--sobre-cor);
+  --color-conversa: var(--conversa);
+  --color-bolha: var(--bolha);
+  --color-progresso: var(--progresso);
+  --color-sobre-progresso: var(--sobre-progresso);
+  --color-energia: var(--energia);
+  --color-energia-claro: var(--energia-claro);
+  --color-papel: var(--papel);
+  --color-superficie: var(--superficie);
+  --color-linha: var(--linha);
+  --color-suave: var(--texto-suave);
+  --color-indigo: var(--indigo);
+  --color-indigo-escuro: var(--indigo-escuro);
+  --color-indigo-claro: var(--indigo-claro);
+  --color-marcador: var(--marcador);
+  --color-marcador-claro: var(--marcador-claro);
+  --color-mangal: var(--mangal);
+  --color-mangal-claro: var(--mangal-claro);
+  --color-risco: var(--risco);
+  --color-risco-claro: var(--risco-claro);
+  --font-sans: var(--font-plex-sans);
+  --font-titulo: var(--font-schibsted);
+  --font-mono: var(--font-plex-mono);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-schibsted), system-ui, sans-serif;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 2px solid var(--indigo);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* O marcador: só se usa para "isto é um sinal de alerta". */
+.marcado {
+  background-image: linear-gradient(
+    100deg,
+    transparent 0.2em,
+    var(--marcador) 0.2em,
+    var(--marcador) calc(100% - 0.2em),
+    transparent calc(100% - 0.2em)
+  );
+  background-size: 100% 78%;
+  background-position: 0 70%;
+  background-repeat: no-repeat;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.2em;
+  margin: 0 -0.2em;
+  color: #16213a;
+}
+
+/* Variante para um bloco inteiro (uma fala numa chamada). */
+.marcado-bloco {
+  background: var(--marcador);
+  color: #16213a;
+}
+
+@keyframes marcar {
+  from {
+    background-size: 0% 78%;
+  }
+  to {
+    background-size: 100% 78%;
+  }
+}
+
+.marcado-anim {
+  animation: marcar 320ms ease-out both;
+}
+
+/* ---------- Celebração ----------
+   Ecrã inteiro ao ganhar uma conquista ou subir de nível. As animações duram o som:
+   as que se repetem recebem o número de ciclos a partir do componente. */
+.celebracao-fundo {
+  background: radial-gradient(circle at 50% 42%, rgb(10 12 20 / 0.86), rgb(3 4 8 / 0.96) 70%);
+  backdrop-filter: blur(6px);
+  animation: cel-fundo 400ms ease-out both;
+}
+
+@keyframes cel-fundo {
+  from {
+    opacity: 0;
+  }
+}
+
+.celebracao-holofote {
+  background: radial-gradient(circle, color-mix(in srgb, var(--energia) 30%, transparent) 0%, transparent 60%);
+  animation: cel-holofote 1.2s ease-out both;
+}
+
+@keyframes cel-holofote {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+.celebracao-raios-lentos {
+  background: repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--energia) 26%, transparent) 0deg 8deg, transparent 8deg 20deg);
+  mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  animation-name: cel-raios;
+  animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1);
+  animation-fill-mode: both;
+}
+
+@keyframes cel-raios {
+  from {
+    opacity: 0;
+    transform: rotate(0deg) scale(0.6);
+  }
+  8% {
+    opacity: 1;
+    transform: rotate(10deg) scale(1);
+  }
+  to {
+    opacity: 0.7;
+    transform: rotate(120deg) scale(1);
+  }
+}
+
+.celebracao-texto {
+  animation: cel-texto 600ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+@keyframes cel-texto {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* Medalha: cai, balança na fita, gira como moeda, flutua e brilha. */
+.medalha-queda {
+  animation: medalha-queda 900ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+
+@keyframes medalha-queda {
+  from {
+    opacity: 0;
+    transform: translateY(-70vh) rotate(-10deg);
+  }
+  60% {
+    opacity: 1;
+  }
+}
+
+.medalha-pendulo {
+  transform-origin: 50% 0;
+  animation: medalha-pendulo 4s ease-out 0.75s both;
+}
+
+@keyframes medalha-pendulo {
+  0% {
+    transform: rotate(9deg);
+  }
+  14% {
+    transform: rotate(-7deg);
+  }
+  28% {
+    transform: rotate(5deg);
+  }
+  42% {
+    transform: rotate(-3deg);
+  }
+  58% {
+    transform: rotate(1.6deg);
+  }
+  76% {
+    transform: rotate(-0.6deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.medalha-flutuar {
+  animation: medalha-flutuar 3.2s ease-in-out 1.2s both;
+}
+
+@keyframes medalha-flutuar {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.medalha-moeda {
+  animation: medalha-moeda 1.4s cubic-bezier(0.4, 0, 0.2, 1) 2.6s both;
+}
+
+@keyframes medalha-moeda {
+  from {
+    transform: perspective(600px) rotateY(0deg);
+  }
+  to {
+    transform: perspective(600px) rotateY(360deg);
+  }
+}
+
+.medalha-brilho-faixa {
+  animation: medalha-brilho 3.4s ease-in-out 1.4s infinite;
+}
+
+@keyframes medalha-brilho {
+  0% {
+    transform: translateX(0);
+  }
+  45%,
+  100% {
+    transform: translateX(150px);
+  }
+}
+
+.faisca {
+  margin: -6px 0 0 -6px;
+  background: var(--energia);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity: 0;
+  animation-name: faisca;
+  animation-duration: 1.8s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes faisca {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.2) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+}
+
+/* Nível: a barra enche, o emblema antigo rebenta e o novo entra com uma onda de choque. */
+.emblema-carregar {
+  animation: emblema-carregar 1.3s ease-in both;
+}
+
+@keyframes emblema-carregar {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  85% {
+    transform: scale(1.04) rotate(-2deg);
+  }
+  92% {
+    transform: scale(1.06) rotate(2deg);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+.barra-encher {
+  animation: barra-encher 1.1s cubic-bezier(0.5, 0, 0.3, 1) 0.15s both;
+}
+
+@keyframes barra-encher {
+  from {
+    width: 8%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.emblema-sair {
+  animation: emblema-sair 450ms ease-out both;
+}
+
+@keyframes emblema-sair {
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+    filter: blur(6px);
+  }
+}
+
+.emblema-entrar {
+  animation: emblema-entrar 800ms cubic-bezier(0.3, 1.5, 0.5, 1) 0.1s both;
+}
+
+@keyframes emblema-entrar {
+  from {
+    opacity: 0;
+    transform: scale(0.3) rotate(-12deg);
+  }
+}
+
+.emblema-pulsar {
+  animation: emblema-pulsar 1.6s ease-in-out 1s both;
+}
+
+@keyframes emblema-pulsar {
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 18px color-mix(in srgb, var(--energia) 60%, transparent));
+  }
+}
+
+.onda-choque {
+  border: 3px solid var(--energia);
+  animation: onda-choque 1s ease-out both;
+}
+
+@keyframes onda-choque {
+  from {
+    opacity: 0.9;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+.numero-entrar {
+  animation: numero-entrar 500ms cubic-bezier(0.3, 1.4, 0.5, 1) 0.2s both;
+}
+
+@keyframes numero-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(60%);
+  }
+}
+
+@keyframes papelinho-cair {
+  from {
+    top: -4%;
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    top: 104%;
+    opacity: 0;
+  }
+}
+
+.papelinho {
+  position: absolute;
+  top: -4%;
+  opacity: 0;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  animation-name: papelinho-cair;
+  animation-timing-function: cubic-bezier(0.3, 0.2, 0.6, 1);
+  animation-fill-mode: both;
+}
+
+/* Exercícios interactivos */
+@keyframes cartao-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+.cartao-entrar {
+  animation: cartao-entrar 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes ponto-escrever {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+.ponto-escrever {
+  animation: ponto-escrever 1s ease-in-out infinite;
+}
+/* A barra de tempo do modo relâmpago é informação, não decoração: mantém-se com movimento reduzido. */
+@keyframes relampago-tempo {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+.relampago-tempo {
+  animation: relampago-tempo linear forwards;
+}
+
+@keyframes carregamento-vigia {
+  from {
+    transform: translateX(-110%);
+  }
+  to {
+    transform: translateX(210%);
+  }
+}
+
+.carregamento-vigia {
+  animation: carregamento-vigia 1.35s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cartao-entrar,
+  .ponto-escrever,
+  .marcado-anim,
+  .celebracao-fundo,
+  .celebracao-holofote,
+  .celebracao-raios-lentos,
+  .celebracao-texto,
+  .medalha-queda,
+  .medalha-pendulo,
+  .medalha-flutuar,
+  .medalha-moeda,
+  .medalha-brilho-faixa,
+  .faisca,
+  .emblema-carregar,
+  .barra-encher,
+  .emblema-entrar,
+  .emblema-pulsar,
+  .onda-choque,
+  .numero-entrar,
+  .carregamento-vigia {
+    animation: none;
+  }
+  .celebracao-papelinhos,
+  .faisca,
+  .onda-choque,
+  .emblema-sair {
+    display: none;
+  }
+  * {
+    transition-duration: 0ms !important;
+  }
+}
+
+/* Impressão dos relatórios */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  body {
+    background: #ffffff;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .nao-imprimir {
+    display: none !important;
+  }
+}
+
+/* Controlos do browser que não seguem o tema: sem o "x" do campo de pesquisa nem as setas dos números. */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  display: none;
+  appearance: none;
+}
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+/* A barra lateral: o menu rola com uma barra de scroll fina. */
+.barra-rolar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+.barra-rolar::-webkit-scrollbar {
+  width: 4px;
+}
+.barra-rolar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
 }
