@@ -7,7 +7,7 @@ import { dados } from "@/lib/exemplo";
 import { desafio, proximoDesafio, resumoDesafio, desafioActual } from "@/lib/analise";
 import { diaCurto, nomeMes, percentagem, soMes } from "@/lib/formatos";
 
-/** Os relatórios mensais que a MozCyber envia quando cada desafio fecha. */
+/** Os relatórios mensais que o Vigia envia quando cada desafio fecha. */
 export default function Relatorios() {
   const aDecorrer = desafioActual?.estado === "enviado" ? desafioActual : proximoDesafio;
   return (

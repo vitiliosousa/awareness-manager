@@ -111,7 +111,7 @@ export function RelatorioMensal({ id }: { id: string }) {
         </section>
 
         <footer className="border-t border-linha pt-4 text-sm text-suave">
-          Enviado a {formatarDia(relatorio.enviadoEm)} para {relatorio.para} · Vigia, treino de cibersegurança da MozCyber
+          Enviado a {formatarDia(relatorio.enviadoEm)} para {relatorio.para} · Vigia, treino de cibersegurança para equipas
         </footer>
       </article>
     </div>

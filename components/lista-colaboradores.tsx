@@ -74,7 +74,7 @@ export function ListaColaboradores() {
     <div className="mx-auto max-w-[1180px]">
       <CabecalhoPagina
         titulo="Colaboradores"
-        descricao={`${plural(dados.colaboradores.length, "pessoa", "pessoas")} da ${dados.empresa.nome} no treino. Para acrescentar ou retirar alguém, fala com a MozCyber.`}
+        descricao={`${plural(dados.colaboradores.length, "pessoa", "pessoas")} da ${dados.empresa.nome} no treino. Para acrescentar ou retirar alguém, fale com a equipa do Vigia.`}
         accoes={
           <>
             <button

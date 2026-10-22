@@ -78,7 +78,7 @@ export type Progresso = {
   distintivos: number;
 };
 
-/** O relatório mensal que a MozCyber envia ao gestor quando um desafio fecha. */
+/** O relatório mensal que o Vigia envia ao gestor quando um desafio fecha. */
 export type Relatorio = { desafioId: string; enviadoEm: string; para: string };
 
 export type Dados = {
