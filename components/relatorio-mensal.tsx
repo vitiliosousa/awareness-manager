@@ -7,12 +7,13 @@ import { LinkVoltar } from "@/components/blocos";
 import { Vazio } from "@/components/campos";
 import { Anel, BarrasHorizontais } from "@/components/graficos";
 import { Logo, botaoPrimario } from "@/components/ui";
-import { dados } from "@/lib/exemplo";
+import { dados, useDados } from "@/lib/dados";
 import { desafio as desafioPorId, estadoNoDesafio, historico, participantesDe, porDepartamento, porTema, resumoDesafio } from "@/lib/analise";
 import { diaCurto, formatarDia, nomeMes, percentagem, plural } from "@/lib/formatos";
 
 /** O relatório de um mês, numa folha que se imprime (ou guarda em PDF) tal como chegou por email. */
 export function RelatorioMensal({ id }: { id: string }) {
+  useDados();
   const relatorio = dados.relatorios.find((r) => r.desafioId === id);
   const d = desafioPorId(id);
   if (!relatorio || !d) {

@@ -8,7 +8,7 @@ import { Icone, type IconSvgElement } from "@/components/icone";
 import { Logo } from "@/components/ui";
 import { Monograma } from "@/components/empresa-visual";
 import { confirmar } from "@/components/confirmar";
-import { dados } from "@/lib/exemplo";
+import { terminarSessao, useDados } from "@/lib/dados";
 import { alternarBarra, useBarraRecolhida } from "@/lib/preferencias";
 
 type Ligacao = { href: string; rotulo: string; icone: IconSvgElement };
@@ -76,7 +76,7 @@ function LogoGestor() {
 
 /** A empresa de quem está a gerir, por baixo do logótipo. */
 function EmpresaActual({ recolhida }: { recolhida: boolean }) {
-  const { empresa } = dados;
+  const { empresa } = useDados();
   if (recolhida) {
     return (
       <div className="group relative mx-auto mt-5 w-fit" tabIndex={0} aria-label={empresa.nome}>
@@ -191,7 +191,8 @@ function Navegacao({ recolhida, caminho, aoNavegar, rolar = false }: { recolhida
                   type="button"
                   aria-label={recolhida ? "Terminar sessão" : undefined}
                   onClick={async () => {
-                    if (await confirmar({ titulo: "Terminar sessão?", texto: "Para voltar, abre o link de acesso que recebes por email.", confirmar: "Terminar sessão" })) {
+                    if (await confirmar({ titulo: "Terminar sessão?", texto: "Para voltar, pedes um link de acesso novo com o teu email.", confirmar: "Terminar sessão" })) {
+                      terminarSessao();
                       aoNavegar?.();
                       router.push("/sessao-terminada");
                     }

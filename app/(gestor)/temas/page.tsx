@@ -1,3 +1,5 @@
+"use client";
+
 import { Idea01Icon } from "@hugeicons/core-free-icons";
 import { Icone } from "@/components/icone";
 import { CabecalhoPagina, Etiqueta } from "@/components/campos";
@@ -6,9 +8,11 @@ import { Barra, Tendencia } from "@/components/empresa-visual";
 import { GraficoLinhas } from "@/components/graficos";
 import { desafiosComResultados, porTema, proximoDesafio, temaAoLongo, nomeTema } from "@/lib/analise";
 import { mesCurto, plural, soMes } from "@/lib/formatos";
+import { useDados } from "@/lib/dados";
 
 /** Em que temas a equipa acerta menos: é aí que vale a pena insistir. */
 export default function Temas() {
+  useDados();
   const temas = porTema();
   const fracos = temas.filter((t) => t.acerto < 60);
   const fortes = [...temas].reverse().slice(0, 3);

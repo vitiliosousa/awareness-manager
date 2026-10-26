@@ -1,10 +1,5 @@
 import { Suspense } from "react";
 import { DetalhePessoa } from "@/components/detalhe-pessoa";
-import { dados } from "@/lib/exemplo";
-
-export function generateStaticParams() {
-  return dados.colaboradores.map((c) => ({ id: c.id }));
-}
 
 // Os params ficam dentro de Suspense para a navegação ser instantânea (Cache Components).
 export default function PaginaPessoa({ params }: PageProps<"/colaboradores/[id]">) {

@@ -1,4 +1,4 @@
-// O que o gestor de uma empresa vê. Por agora vem de lib/exemplo.ts; mais tarde virá da API.
+// O que o gestor de uma empresa vê. Vem da API (GET /gestor/dados), já nesta forma.
 
 export type Tema = { id: string; nome: string };
 

@@ -1,15 +1,18 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { Icone } from "@/components/icone";
 import { CabecalhoPagina, Etiqueta } from "@/components/campos";
 import { MesTile } from "@/components/blocos";
 import { Barra } from "@/components/empresa-visual";
-import { dados } from "@/lib/exemplo";
+import { dados, useDados } from "@/lib/dados";
 import { nomeTema, resumoDesafio, rotuloEstadoDesafio, tomEstadoDesafio } from "@/lib/analise";
 import { diaCurto, nomeMes, percentagem } from "@/lib/formatos";
 
 /** Todos os desafios que a empresa recebeu (e o próximo), do mais recente para o mais antigo. */
 export default function Desafios() {
+  useDados();
   const lista = [...dados.desafios].sort((a, b) => b.id.localeCompare(a.id));
   return (
     <div className="mx-auto max-w-[1180px]">

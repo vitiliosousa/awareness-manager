@@ -10,7 +10,7 @@ import { BotaoFiltros, FiltrosActivos, type Filtro } from "@/components/filtros"
 import { BotaoAsync } from "@/components/botao-async";
 import { EtiquetaAcesso, EtiquetaEstado, PessoaNaLinha } from "@/components/pessoas";
 import { botaoPrimario, botaoSecundario } from "@/components/ui";
-import { dados } from "@/lib/exemplo";
+import { dados, useDados, useRecarregar } from "@/lib/dados";
 import { descarregarCsv, enviarConvite } from "@/lib/accoes";
 import { departamentos, desafioActual, estadoNoDesafio, participantesDe, resumoPessoa, rotuloEstado } from "@/lib/analise";
 import { percentagem, plural, soMes } from "@/lib/formatos";
@@ -20,8 +20,11 @@ const grelha = "md:grid-cols-[minmax(0,2fr)_minmax(0,1.1fr)_minmax(0,1.2fr)_90px
 
 /** A equipa toda: quem entrou, quem fez o desafio do mês, quem precisa de acompanhamento. */
 export function ListaColaboradores() {
+  useDados();
+  const recarregar = useRecarregar();
   const params = useSearchParams();
-  const d = desafioActual!;
+  // Uma empresa que ainda não recebeu nenhum desafio também vê a lista (para enviar os convites).
+  const d = desafioActual;
   const [busca, setBusca] = useState("");
   const [departamento, setDepartamento] = useState("todos");
   const [situacao, setSituacao] = useState(params.get("situacao") === "atencao" ? "atencao" : "todas");
@@ -29,7 +32,7 @@ export function ListaColaboradores() {
   const [convites, setConvites] = useState<string | null>(null);
 
   const linhas = dados.colaboradores
-    .map((c) => ({ c, resumo: resumoPessoa(c), estado: participantesDe(d, [c]).length ? estadoNoDesafio(d, c.id) : null }))
+    .map((c) => ({ c, resumo: resumoPessoa(c), estado: d && participantesDe(d, [c]).length ? estadoNoDesafio(d, c.id) : null }))
     .sort((a, b) => a.c.nome.localeCompare(b.c.nome, "pt"));
   const termo = busca.trim().toLowerCase();
   const visiveis = linhas.filter(
@@ -40,7 +43,7 @@ export function ListaColaboradores() {
       (!termo || `${l.c.nome} ${l.c.email} ${l.c.cargo}`.toLowerCase().includes(termo)),
   );
   const porEntrar = dados.colaboradores.filter((c) => estadoAcesso(c) !== "activo");
-  const mes = soMes(d.id).toLowerCase();
+  const mes = d ? soMes(d.id).toLowerCase() : "";
 
   const filtros: Filtro[] = [
     { id: "departamento", rotulo: "Departamento", valor: departamento, padrao: "todos", aoMudar: setDepartamento, opcoes: [{ valor: "todos", rotulo: "Todos" }, ...departamentos.map((x) => ({ valor: x, rotulo: x }))] },
@@ -53,7 +56,7 @@ export function ListaColaboradores() {
       opcoes: [
         { valor: "todas", rotulo: "Todas" },
         { valor: "atencao", rotulo: "Precisam de atenção" },
-        ...(["concluido", "em-curso", "nao-iniciou"] as const).map((e) => ({ valor: e, rotulo: `${rotuloEstado[e]} (${mes})` })),
+        ...(d ? (["concluido", "em-curso", "nao-iniciou"] as const) : []).map((e) => ({ valor: e, rotulo: `${rotuloEstado[e]} (${mes})` })),
       ],
     },
     {
@@ -82,7 +85,7 @@ export function ListaColaboradores() {
               className={botaoSecundario}
               onClick={() =>
                 descarregarCsv("colaboradores.csv", [
-                  ["Nome", "Email", "Departamento", "Cargo", "Acesso", `Desafio de ${mes}`, "Desafios feitos", "Desafios recebidos", "Acerto médio (%)", "Atenção"],
+                  ["Nome", "Email", "Departamento", "Cargo", "Acesso", d ? `Desafio de ${mes}` : "Desafio do mês", "Desafios feitos", "Desafios recebidos", "Acerto médio (%)", "Atenção"],
                   ...linhas.map((l) => [l.c.nome, l.c.email, l.c.departamento, l.c.cargo, estadoAcesso(l.c), l.estado ? rotuloEstado[l.estado] : "", l.resumo.feitos, l.resumo.recebidos, l.resumo.acerto, l.resumo.atencao]),
                 ])
               }
@@ -94,8 +97,8 @@ export function ListaColaboradores() {
                 ocupado="A enviar…"
                 className={botaoPrimario}
                 aoClicar={async () => {
-                  const n = await enviarConvite(porEntrar.map((c) => c.id));
-                  setConvites(`Link de acesso reenviado a ${plural(n, "pessoa", "pessoas")}.`);
+                  setConvites(await enviarConvite(porEntrar.map((c) => c.id)));
+                  await recarregar();
                 }}
               >
                 <Icone icon={Mail01Icon} size={17} /> Reenviar convites ({porEntrar.length})
@@ -121,7 +124,7 @@ export function ListaColaboradores() {
         {visiveis.length === 0 ? (
           <p className="rounded-[14px] border border-linha bg-superficie px-4 py-8 text-center text-suave">Nenhum colaborador corresponde.</p>
         ) : (
-          <CaixaLista colunas={["Colaborador", "Departamento", `Desafio de ${mes}`, "Desafios", "Acerto"]} grelha={grelha} cabecalhoClasse="hidden md:grid">
+          <CaixaLista colunas={["Colaborador", "Departamento", d ? `Desafio de ${mes}` : "Desafio do mês", "Desafios", "Acerto"]} grelha={grelha} cabecalhoClasse="hidden md:grid">
             {visiveis.map(({ c, resumo, estado }) => (
               <li key={c.id} className={`relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 border-b border-linha px-5 py-3 transition-colors last:border-b-0 hover:bg-papel/70 ${grelha}`}>
                 <div className="min-w-0">

@@ -11,14 +11,17 @@ import { BotaoAsync } from "@/components/botao-async";
 import { EtiquetaAcesso, EtiquetaEstado } from "@/components/pessoas";
 import { Avatar, botaoPrimario, botaoSecundario } from "@/components/ui";
 import { enviarConvite } from "@/lib/accoes";
+import { useDados, useRecarregar } from "@/lib/dados";
 import { acertoDe, colaborador, desafiosComResultados, estadoNoDesafio, porTema, progressoDe, resultadoDe, resumoPessoa } from "@/lib/analise";
 import { diaCurto, formatarDia, iniciais, percentagem, plural } from "@/lib/formatos";
 import { estadoAcesso } from "@/lib/tipos";
 
 /** A ficha de um colaborador: o que fez em cada desafio, onde acerta menos e o acesso à plataforma. */
 export function DetalhePessoa({ id }: { id: string }) {
+  useDados();
+  const recarregar = useRecarregar();
   const c = colaborador(id);
-  const [enviado, setEnviado] = useState(false);
+  const [enviado, setEnviado] = useState<string | null>(null);
 
   if (!c) {
     return (
@@ -150,15 +153,15 @@ export function DetalhePessoa({ id }: { id: string }) {
               ocupado="A enviar…"
               className={`mt-4 w-full ${acesso === "activo" ? botaoSecundario : botaoPrimario}`}
               aoClicar={async () => {
-                await enviarConvite([c.id]);
-                setEnviado(true);
+                setEnviado(await enviarConvite([c.id]));
+                await recarregar();
               }}
             >
               <Icone icon={Mail01Icon} size={17} />
               {acesso === "sem-convite" ? "Enviar convite" : acesso === "convite" ? "Reenviar convite" : "Enviar novo link"}
             </BotaoAsync>
             <p className="mt-2 text-sm text-suave" aria-live="polite">
-              {enviado ? `Link enviado para ${c.email}.` : "Entra-se por um link pessoal, sem palavra-passe."}
+              {enviado ?? "Entra-se por um link pessoal, sem palavra-passe."}
             </p>
           </Cartao>
 

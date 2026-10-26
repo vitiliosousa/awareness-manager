@@ -10,7 +10,8 @@ import { GraficoEvolucao } from "@/components/empresa-visual";
 import { Anel, BarraPartes, BarrasHorizontais } from "@/components/graficos";
 import { BotaoAsync } from "@/components/botao-async";
 import { Avatar, botaoSecundario } from "@/components/ui";
-import { dados, HOJE } from "@/lib/exemplo";
+import { SemDesafios } from "@/components/sem-desafios";
+import { dados, HOJE, useDados } from "@/lib/dados";
 import { enviarLembrete } from "@/lib/accoes";
 import { desafioActual, estadoNoDesafio, historico, participantesDe, porDepartamento, porTema, progressoDe, proximoDesafio, resumoDesafio, resumoPessoa, rotuloEstadoDesafio, tomEstadoDesafio } from "@/lib/analise";
 import { diaCurto, diasEntre, formatarDia, iniciais, nomeMes, percentagem, plural, soMes } from "@/lib/formatos";
@@ -20,8 +21,11 @@ type Tarefa = { texto: string; href: string; rotulo: string; urgente?: boolean }
 
 /** O primeiro ecrã do gestor: como vai o desafio do mês, quem falta e o que merece atenção. */
 export default function Inicio() {
+  useDados();
+  const [lembrete, setLembrete] = useState<string | null>(null);
   const { colaboradores, gestor, empresa } = dados;
-  const d = desafioActual!;
+  const d = desafioActual;
+  if (!d) return <SemDesafios titulo={`Olá, ${gestor.nome.split(" ")[0]}`} />;
   const resumo = resumoDesafio(d);
   const evolucao = historico();
   const anterior = evolucao.at(-2);
@@ -34,7 +38,6 @@ export default function Inicio() {
   const atencao = colaboradores.filter((c) => resumoPessoa(c).atencao);
   const temaFraco = porTema()[0];
   const ultimoRelatorio = dados.relatorios[0];
-  const [lembrete, setLembrete] = useState<string | null>(null);
 
   const departamentos = porDepartamento(d)
     .map((l) => ({ id: l.departamento, rotulo: l.departamento, valor: Math.round(l.conclusao * 100) }))
@@ -107,8 +110,7 @@ export default function Inicio() {
                       ocupado="A enviar…"
                       className={botaoSecundario}
                       aoClicar={async () => {
-                        const n = await enviarLembrete(faltam.map((c) => c.id));
-                        setLembrete(`Lembrete enviado a ${plural(n, "pessoa", "pessoas")}.`);
+                        setLembrete(await enviarLembrete(d.id, faltam.map((c) => c.id)));
                       }}
                     >
                       <Icone icon={Mail01Icon} size={17} /> Lembrar quem falta ({faltam.length})

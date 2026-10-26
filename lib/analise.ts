@@ -1,4 +1,4 @@
-import { dados } from "./exemplo";
+import { dados } from "./dados";
 import type { PontoHistorico } from "./formatos";
 import type { Colaborador, Desafio, Resultado } from "./tipos";
 
@@ -15,14 +15,22 @@ export const tomEstadoDesafio = { agendado: "azul", enviado: "verde", fechado: "
 export const nomeTema = (id: string) => dados.temas.find((t) => t.id === id)?.nome ?? id;
 
 /** Os desafios que já saíram, do mais antigo para o mais recente. */
-export const desafiosComResultados = dados.desafios.filter((d) => d.estado !== "agendado").sort((a, b) => a.id.localeCompare(b.id));
+export let desafiosComResultados: Desafio[] = [];
 
-/** O desafio a decorrer; sem nenhum, o último que fechou. */
-export const desafioActual = desafiosComResultados.find((d) => d.estado === "enviado") ?? desafiosComResultados.at(-1);
+/** O desafio a decorrer; sem nenhum, o último que fechou. Uma empresa que ainda não recebeu nenhum não o tem. */
+export let desafioActual: Desafio | undefined;
 
-export const proximoDesafio = dados.desafios.find((d) => d.estado === "agendado");
+export let proximoDesafio: Desafio | undefined;
 
-export const departamentos = [...new Set(dados.colaboradores.map((c) => c.departamento))].sort((a, b) => a.localeCompare(b, "pt"));
+export let departamentos: string[] = [];
+
+/** Refaz as listas de cima a partir dos dados. Corre sempre que os dados chegam da API. */
+export function recalcularAnalise() {
+  desafiosComResultados = dados.desafios.filter((d) => d.estado !== "agendado").sort((a, b) => a.id.localeCompare(b.id));
+  desafioActual = desafiosComResultados.find((d) => d.estado === "enviado") ?? desafiosComResultados.at(-1);
+  proximoDesafio = [...dados.desafios].sort((a, b) => a.id.localeCompare(b.id)).find((d) => d.estado === "agendado");
+  departamentos = [...new Set(dados.colaboradores.map((c) => c.departamento))].sort((a, b) => a.localeCompare(b, "pt"));
+}
 
 /** Quem recebeu o desafio: quem já estava na plataforma antes de ele acabar. */
 export function participantesDe(d: Desafio, pessoas: Colaborador[] = dados.colaboradores) {

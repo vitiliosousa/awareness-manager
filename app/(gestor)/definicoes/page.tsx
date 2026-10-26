@@ -5,11 +5,12 @@ import { CabecalhoPagina, Interruptor } from "@/components/campos";
 import { Cartao } from "@/components/blocos";
 import { EscolhaPaleta } from "@/components/escolha-paleta";
 import { SeletorTema } from "@/components/seletor-tema";
-import { dados } from "@/lib/exemplo";
+import { dados, useDados } from "@/lib/dados";
 import { formatarDia } from "@/lib/formatos";
 
 /** Aparência desta app, avisos por email e os dados da conta. */
 export default function Definicoes() {
+  useDados();
   // Ainda sem API: as escolhas de email ficam só nesta página.
   const [resumo, setResumo] = useState(true);
   const [alerta, setAlerta] = useState(true);

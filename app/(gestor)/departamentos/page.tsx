@@ -1,8 +1,11 @@
+"use client";
+
 import { CabecalhoPagina } from "@/components/campos";
 import { CaixaLista, Cartao } from "@/components/blocos";
 import { BarraEstados, Tendencia } from "@/components/empresa-visual";
 import { GraficoLinhas, MapaCalor } from "@/components/graficos";
-import { dados } from "@/lib/exemplo";
+import { dados, useDados } from "@/lib/dados";
+import { SemDesafios } from "@/components/sem-desafios";
 import { departamentos, desafioActual, desafiosComResultados, historico, porDepartamento, porTema, resumoPessoa } from "@/lib/analise";
 import { mesCurto, percentagem, soMes } from "@/lib/formatos";
 
@@ -10,7 +13,9 @@ const grelha = "md:grid-cols-[minmax(0,1.4fr)_70px_minmax(0,1.6fr)_80px_90px_110
 
 /** Os departamentos lado a lado: quem participa mais, quem acerta mais, e em que temas. */
 export default function Departamentos() {
-  const d = desafioActual!;
+  useDados();
+  const d = desafioActual;
+  if (!d) return <SemDesafios titulo="Departamentos" />;
   const linhas = porDepartamento(d).sort((a, b) => b.conclusao - a.conclusao);
   const temas = dados.temas.filter((t) => desafiosComResultados.some((x) => x.temas.includes(t.id)));
   const mapa = departamentos.map((dep) => {

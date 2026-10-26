@@ -53,8 +53,8 @@ export function Texto({
   aoMudar: (v: string) => void;
   placeholder?: string;
   mono?: boolean;
-  /** "password" para palavras-passe. */
-  tipo?: "text" | "password";
+  /** "password" para palavras-passe, "email" para endereços de email. */
+  tipo?: "text" | "password" | "email";
   className?: string;
 }) {
   return (
@@ -63,7 +63,7 @@ export function Texto({
         <input
           id={id}
           type={tipo}
-          autoComplete={tipo === "password" ? "off" : undefined}
+          autoComplete={tipo === "password" ? "off" : tipo === "email" ? "email" : undefined}
           value={valor}
           onChange={(e) => aoMudar(e.target.value)}
           placeholder={placeholder}

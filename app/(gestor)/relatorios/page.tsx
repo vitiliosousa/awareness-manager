@@ -1,14 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight01Icon, File02Icon } from "@hugeicons/core-free-icons";
 import { Icone } from "@/components/icone";
 import { CabecalhoPagina } from "@/components/campos";
 import { MesTile } from "@/components/blocos";
-import { dados } from "@/lib/exemplo";
+import { dados, useDados } from "@/lib/dados";
 import { desafio, proximoDesafio, resumoDesafio, desafioActual } from "@/lib/analise";
 import { diaCurto, nomeMes, percentagem, soMes } from "@/lib/formatos";
 
 /** Os relatórios mensais que o Vigia envia quando cada desafio fecha. */
 export default function Relatorios() {
+  useDados();
   const aDecorrer = desafioActual?.estado === "enviado" ? desafioActual : proximoDesafio;
   return (
     <div className="mx-auto max-w-[1180px]">
@@ -40,7 +43,7 @@ export default function Relatorios() {
 
       {aDecorrer && (
         <p className="mt-4 flex items-center gap-2 text-sm text-suave">
-          <Icone icon={File02Icon} size={16} /> O relatório de {soMes(aDecorrer.id).toLowerCase()} chega depois de o desafio fechar, a {diaCurto(aDecorrer.fim)}.
+          <Icone icon={File02Icon} size={16} /> O relatório de {soMes(aDecorrer.id).toLowerCase()} chega depois de o desafio fechar, a {diaCurto(aDecorrer.fim).replace(/\.$/, "")}.
         </p>
       )}
     </div>

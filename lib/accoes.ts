@@ -1,17 +1,34 @@
-// Acções do gestor. Ainda não há API: esperam um pouco e dão-se como feitas, para o ecrã mostrar o fluxo.
+import { api, mensagemDeErro } from "./api";
+import { plural } from "./formatos";
 
-const esperar = (ms: number) => new Promise((r) => setTimeout(r, ms));
+// Acções do gestor, na API. A API só aceita pessoas da empresa de quem entrou.
 
-/** Lembrete por email a quem ainda não fez o desafio. */
-export async function enviarLembrete(colaboradores: string[]) {
-  await esperar(900);
-  return colaboradores.length;
+type Envio = { enviados: number; falharam: number };
+
+/** O que dizer depois de um envio: quantos seguiram e quantos falharam. */
+function resumoEnvio(r: Envio, oQue: string) {
+  const ok = r.enviados - r.falharam;
+  if (r.enviados === 0) return "Não havia ninguém a quem enviar.";
+  if (r.falharam === 0) return `${oQue} enviado a ${plural(ok, "pessoa", "pessoas")}.`;
+  return `${oQue} enviado a ${plural(ok, "pessoa", "pessoas")}; ${plural(r.falharam, "email falhou", "emails falharam")}.`;
 }
 
-/** Convite (ou novo link de acesso) por email. */
+/** Lembrete por email a quem ainda não concluiu o desafio. Devolve a frase para mostrar. */
+export async function enviarLembrete(desafioId: string, colaboradores: string[]) {
+  try {
+    return resumoEnvio(await api.criar<Envio>("/gestor/lembretes", { desafioId, colaboradores }), "Lembrete");
+  } catch (e) {
+    return mensagemDeErro(e);
+  }
+}
+
+/** Convite (ou novo link de acesso) por email. Devolve a frase para mostrar. */
 export async function enviarConvite(colaboradores: string[]) {
-  await esperar(900);
-  return colaboradores.length;
+  try {
+    return resumoEnvio(await api.criar<Envio>("/gestor/convites", { colaboradores }), "Link de acesso");
+  } catch (e) {
+    return mensagemDeErro(e);
+  }
 }
 
 /** Descarrega uma tabela como CSV, separado por ponto e vírgula (é o que o Excel em português espera). */

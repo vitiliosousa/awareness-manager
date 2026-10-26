@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { BarraLateral } from "@/components/barra-lateral";
 import { ConfirmarHost } from "@/components/confirmar";
+import { SessaoGestor } from "@/components/sessao-gestor";
 import { Logo } from "@/components/ui";
 
 function BarraLateralFallback() {
@@ -19,8 +20,10 @@ function BarraLateralFallback() {
   );
 }
 
+// A app só se mostra com sessão e com os dados da empresa carregados (ver SessaoGestor).
 export default function GestorLayout({ children }: { children: React.ReactNode }) {
   return (
+    <SessaoGestor>
     <div className="flex min-h-screen flex-col lg:flex-row">
       <a
         href="#conteudo"
@@ -36,5 +39,6 @@ export default function GestorLayout({ children }: { children: React.ReactNode }
         {children}
       </main>
     </div>
+    </SessaoGestor>
   );
 }

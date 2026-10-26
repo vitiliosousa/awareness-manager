@@ -14,7 +14,7 @@ import { BarraEstados } from "@/components/empresa-visual";
 import { BotaoAsync } from "@/components/botao-async";
 import { EtiquetaEstado, PessoaNaLinha } from "@/components/pessoas";
 import { botaoPrimario, botaoSecundario } from "@/components/ui";
-import { HOJE } from "@/lib/exemplo";
+import { HOJE, useDados } from "@/lib/dados";
 import { descarregarCsv, enviarLembrete } from "@/lib/accoes";
 import { acertoDe, departamentos, desafio as desafioPorId, estadoNoDesafio, nomeTema, participantesDe, porDepartamento, porTema, resultadoDe, resumoDesafio, rotuloEstado, rotuloEstadoDesafio, tomEstadoDesafio, type EstadoNoDesafio } from "@/lib/analise";
 import { diaCurto, diasEntre, nomeMes, percentagem, plural } from "@/lib/formatos";
@@ -25,6 +25,7 @@ type Separador = "pessoas" | "departamentos" | "temas";
 const grelha = "md:grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)_minmax(0,1fr)_80px_90px] md:gap-x-5";
 
 export function DetalheDesafio({ id }: { id: string }) {
+  useDados();
   const d = desafioPorId(id);
   const [separador, setSeparador] = useState<Separador>("pessoas");
 
@@ -163,8 +164,7 @@ function PainelPessoas({ d }: { d: Desafio }) {
               ocupado="A enviar…"
               className={botaoPrimario}
               aoClicar={async () => {
-                const n = await enviarLembrete(faltam.map((l) => l.c.id));
-                setLembrete(`Lembrete enviado a ${plural(n, "pessoa", "pessoas")}.`);
+                setLembrete(await enviarLembrete(d.id, faltam.map((l) => l.c.id)));
               }}
             >
               <Icone icon={Mail01Icon} size={17} /> Lembrar quem falta ({faltam.length})
